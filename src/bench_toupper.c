@@ -15,7 +15,7 @@ int main(int argc, char const *argv) {
   double delta;
 
   gettimeofday(&start, 0);
-  int fd = open("./sometext.txt", O_RDWR, S_IRUSR | S_IWUSR);
+  int fd = open("/lfs/sometext.txt", O_RDWR, S_IRUSR | S_IWUSR);
   struct stat sb;
 
   if (fstat(fd,&sb) == -1){
