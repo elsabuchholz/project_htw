@@ -23,7 +23,6 @@ make bench-toupper-formatted
 COUNTER=1
 while  [ $COUNTER -le 3 ]; do
 cp /home/l4mdc/sometext.txt /lfs/sometext.txt
-echo "$COUNTER" >> 1000.csv
 ./out/bench_toupper_formatted  >> 1000.csv
 #sleep um sicher zu stellen, dass sometext nicht entfernt wird vor Änderungen
 sleep 10s
