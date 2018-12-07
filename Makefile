@@ -11,6 +11,9 @@ timer: pre-build
 
 bench-toupper: pre-build
 	$(GCC) src/bench_toupper.c -o out/bench_toupper
+
+bench-toupper-formatted: pre-build
+	$(GCC) src/bench_toupper_formatted.c -o out/bench_toupper_formatted
 	
 clean: pre-build
 	rm -rf ./out/*
