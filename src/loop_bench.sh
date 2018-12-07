@@ -1,8 +1,20 @@
 #!/bin/bash
 #create random file with characters
 #< /dev/urandom tr -dc "X" | head -c1000 > /lfs/sometext.txt
-dd if=/dev/urandom bs=786438 count=1 | base64 > /home/l4mdc/sometext.txt
-cat /home/l4mdc/sometext.txt | tr 'A-Za-z0-9+/=' 'a-z$%'
+#size 10K - 20M erst ab 4K kann gemessen werden, da character mehr als 4K groß ist
+#10K
+size=10000
+#100K
+#size=100000
+#1M
+#size=1000000
+#10M
+#size=10000000
+#20M
+#size=20000000
+dd if=/dev/urandom bs=$size count=1 | base64 > /home/l4mdc/sometext.txt
+cat /home/l4mdc/sometext.txt | tr 'A-Za-z0-9+/=' 'a-z'
+truncate -s $size
 
 # make ist definiert in Makefile kompiliert bench-touper code
 make bench-toupper-formatted
