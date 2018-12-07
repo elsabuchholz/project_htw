@@ -1,10 +1,13 @@
 #!/bin/bash
+#counter um das skript x mal auszuführen in while do loop
 COUNTER=1
 while  [ $COUNTER -le 3 ]; do
-make src/bench_toupper
+# make ist definiert in Makefile kompiliert bench-touper code
+make bench_toupper
 echo "$COUNTER" >> output.txt
 ./out/bench_toupper  >> output.txt
-sleep 10s
+#sleep um sicher zu stellen, dass sometext nicht entfernt wird vor Änderungen
+sleep 10
 rm -rf /lfs/sometext.txt
 < /dev/urandom tr -dc "X" | head -c1000 > /lfs/sometext.txt
 echo The counter is $COUNTER
