@@ -1,6 +1,6 @@
 #!/bin/bash
 COUNTER=1
-while   $COUNTER -le 3 
+while  [] $COUNTER -le 3 ]; do
 make src/bench_toupper
 ./out/bench_toupper  > output.txt
 sleep 10s
