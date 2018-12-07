@@ -4,7 +4,7 @@ COUNTER=1
 while  [ $COUNTER -le 3 ]; do
 # make ist definiert in Makefile kompiliert bench-touper code
 make bench_toupper_formatted
-echo "$COUNTER" >> output.txt
+echo "$COUNTER" >> 1000.txt
 ./out/bench_toupper_formatted  >> 1000.txt
 #sleep um sicher zu stellen, dass sometext nicht entfernt wird vor Änderungen
 sleep 10
