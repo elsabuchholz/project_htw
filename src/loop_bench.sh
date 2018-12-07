@@ -1,9 +1,9 @@
 #!/bin/bash
+# make ist definiert in Makefile kompiliert bench-touper code
+make bench-toupper-formatted
 #counter um das skript x mal auszuführen in while do loop
 COUNTER=1
 while  [ $COUNTER -le 3 ]; do
-# make ist definiert in Makefile kompiliert bench-touper code
-make bench_toupper_formatted
 echo "$COUNTER" >> 1000.txt
 ./out/bench_toupper_formatted  >> 1000.txt
 #sleep um sicher zu stellen, dass sometext nicht entfernt wird vor Änderungen
