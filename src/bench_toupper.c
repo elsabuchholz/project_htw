@@ -27,7 +27,7 @@ int main(int argc, char const *argv) {
 
   for (int i=0; i < sb.st_size; i++)
   {
-    if ((i % 2) == 0){
+    if ((i % 1) == 0){
       file_in_memory[i] = toupper(file_in_memory[i]);
     }
     printf("%c",file_in_memory[i]);
