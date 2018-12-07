@@ -1,0 +1,433 @@
+############
+Genz Installation
+##########
+
+#Vm erstellen in virtual box unter Windows
+##Iso herunterladen amd64 
+https://www.debian.org/CD/netinst/
+
+#vm anlegen für Host_vm
+festplatte mind. 20GB /150GB
+ohne Desktop umgebung
+netzwerk nat
+cpu 2
+#disk einlegen VM starten
+#user erstellen
+user root passwd iforgot
+user l4mdc passwd iforgot
+eine Festplatte ohne partitionierung
+
+#Quelle
+https://github.com/FabricAttachedMemory/Emulation/blob/master/README2nd/Windows.md
+---------------------------------------------------------------------------------------------
+#herunterladen des Emulators von git
+#git clone the Emulation repo
+apt install git
+git clone https://github.com/FabricAttachedMemory/Emulation.git
+
+#Quelle
+https://github.com/FabricAttachedMemory/Emulation
+
+# in sudoers aufnehmen l4mdc und ssh keyless
+adduser l4mdc sudo
+
+ssh-keygen -t rsa -b 4096 
+ssh-copy-id remoteusername@server_ip_address
+https://linuxize.com/post/how-to-setup-passwordless-ssh-login/
+
+vim /etc/hosts
+#zeile hinzufügen
+192.168.42.1   node01
+https://askubuntu.com/questions/487310/how-to-give-user-server-name-instead-of-ip-when-connecting-through-ssh
+
+## install sudo(root)
+apt install sudo
+#install vim
+sudo apt install vim
+##bash history permanent in ~/.bashrc eintragen
+PROMPT_COMMAND='history -a'
+##recherche sudo su usw. shell login shell ...
+##save envvar
+su --preserve-environment
+
+
+#Quelle
+https://github.com/FabricAttachedMemory/Emulation
+----------------------------------------------------------
+#install build FAME
+##vorarbeit
+### installieren von packeten, um commands vmdebootstrap, sudo, and virsh ausführen zu können
+apt install sudo
+apt install vmdebootstrap
+(apt install libvirt)
+###kvm installation
+apt install qemu-kvm libvirt-clients libvirt-daemon-system
+## als user l4mdc
+    $ export FAME_DIR=$HOME/FAME
+    $ mkdir $FAME_DIR
+##datei muss groß genug sein
+ $ export FAME_FAM=$FAME_DIR/FAM   # So the file is at $HOME/FAME/FAM mind64G power of 2
+    $ fallocate -l 16G $FAME_FAM
+    $ chgrp libvirt-qemu $FAME_FAM
+    $ chmod 660 $FAME_FAM
+
+##Variabeln setzen
+export FAME_DIR=$HOME/FAME
+export FAME_FAM=$FAME_DIR/FAM 
+
+##ansehen der Variablen
+sudo -E behält die envvar für root bei
+sudo -E ./emulation_configure.bash
+#oder
+env 
+##Variabeln werden nach dem reboot oder nach einem bash (console wechseln)
+## oder su gelöscht
+#Quelle
+https://github.com/FabricAttachedMemory/Emulation/blob/master/README2nd/Preconfigure.md
+-------------------------------------------------------------------------------------------
+#emulator starten
+## n=Anzahl VM
+$ ./emulation_configure.bash n
+
+##nach erfolgreicher Installation sollte in $FAME_DIR folgende Dateien erzeugt sein:
+BASEXX.qcow2 ...
+
+#Quelle
+https://github.com/FabricAttachedMemory/Emulation
+--------------------------------------------------
+#Librian file system
+
+(#libs herunterladen /home/l4mdc/
+git clone https://github.com/FabricAttachedMemory/tm-librarian.git)
+
+wget https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/t/tm-librarian/python3-tm-librarian.deb
+wget https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/t/tm-librarian/tm-librarian.deb
+sudo dpkg -i /home/l4mdc/python3-tm-librarian.deb
+# tritt abhängigkeitsfehler auf
+apt install python3-flask
+apt --fix-broken install
+sudo dpkg -i /home/l4mdc/tm-librarian.deb
+##https://github.com/FabricAttachedMemory/tm-librarian
+
+##Danach wurden Programme installiert
+
+    "BOOK_REGISTER" is /usr/bin/tm-book-register
+    "LIBRARIAN" is /usr/bin/tm-librarian
+
+    tm-book-register - Reads the INI file and creates the database
+    tm-librarian - The LFS metadata server run on the VM host (or ToRMS)
+    tm-lmp - "Librarian Monitoring Protocol", a ReST API for status
+    fsck_lfs - Clean up the Librarian database
+##eine db muss angelegt werden über das ini file "$FAME_DIR/node_fame.ini" 
+##Book_register programm stellt die Datenbank über das INI file her
+##die werte hängen davon ab wieviele nodes, wie groß$FAME_FAM ist und
+##wie groß die booksize ist default 8m
+## alle werte sollen power of 2 sein
+
+sudo mkdir -p /var/hpetm
+##programm book_register starten um bauen der db
+/usr/bin/tm-book-register -d /var/hpetm/librarian.db file.ini
+
+##program starten
+sudo /usr/bin/tm-librarian --verbose
+##oder
+sudo systemctl start tm-librarian
+
+
+#Quelle
+https://github.com/FabricAttachedMemory/Emulation/blob/master/README2nd/Librarian.md
+------------------------------------------------------------------------------------
+#nodes starten und DNS setzen
+
+##falls die envvar weg sind  liegt script in FAME/node_env.sh
+##dieses ausführen mit . vorher setzten im Befehl
+. ./node_env.sh
+Quelle:
+https://askubuntu.com/questions/53177/bash-script-to-set-environment-variables-not-working
+
+##FAME_VERBOSE=true setzten
+##If VERBOSE set to any value (like "yes"), step-by-step operations are sent to stdout and the
+##file $FAME_DIR/fabric_emulation.log
+
+#Quelle
+https://github.com/FabricAttachedMemory/Emulation/
+-----------------------------------------------------
+#Starten der VMS
+ 
+./node_visrh define
+./node_visrh start
+
+#ssh muss eingerichtet werden, sodass namensauflösung stattfindet
+#bisher login nur über:
+sudo ssh l4mdc@192.168.42.xx
+--------------------------------------------------------
+
+^
+Notizen
+-------
+
+#nur mit sudo -E virsh sind die virtuellen Maschinen zu sehen
+
+#aber Skript node_virsh.sh kann als user ausgeführt werden
+
+#ping der vms über sudo möglich
+192.168.42.xx ist die Range für die Maschinen
+
+------------------
+hello world
+
+#herunterladen von Tests hello world
+git clone https://github.com/FabricAttachedMemory/tm-hello-world
+
+#benötigt c code zum compilieren make usw.. ist enthalten in utils
+sudo apt install build-essential
+
+# weiter werden libs benötigt: #include <libpmem.h> und fam_atomic.h
+#diese installieren
+#1. libpmem
+git clone https://github.com/pmem/pmdk.git
+cd pmdk/
+make
+
+#fehlende Packete/libs nachladen
+sudo apt install -y pkg-config
+
+# packete ab version 60.1
+#1.1libndctl-devel installieren
+git clone https://github.com/pmem/ndctl.git
+apt install dh-autoreconf
+cd ndctl
+./autogen.sh
+ Befehl ohne 02 ausführen, der nach autogen kommt --vielleicht reihenfolge ändern -02 -g oder o2
+in configure -V gefixt für gcc 34xx
+
+apt intsall asciidoctor
+apt install libkmod-dev
+apt install libudev-dev
+apt install uuid
+apt install uuid-dev
+apt install libjson-c-dev
+sudo make
+
+#libdaxctl-devel ist jetzt enthalten
+jetzt kann libpmem installiert werden
+cd pmdk
+ sudo make
+
+#libfabric für rdma
+https://github.com/ofiwg/libfabric
+wget https://github.com/ofiwg/libfabric/releases/download/v1.6.2/libfabric-1.6.2.tar.gz
+#oder 
+git clone https://github.com/ofiwg/libfabric.git
+cd libfabric
+sudo ./autogen.sh
+sudo ./configure 
+sudo make
+sudo make install
+
+# unter utils können tests durchgeführt werden
+
+
+#libglib-dev
+wget http://ftp.de.debian.org/debian/pool/main/g/glib2.0/libglib2.0-dev_2.50.3-2_amd64.deb
+sudo dpkg -i libglib2.0-dev_2.50.3-2_amd64.deb
+sudo apt install libpcre3-dev
+sudo apt --fix-broken install
+
+#cd pkmd
+sudo make
+sudo make install
+##notiz besser mit prefix /usr/local?
+
+#fam_atomic.h 
+git clone https://github.com/FabricAttachedMemory/libfam-atomic.git
+sudo sh autogen.sh
+#fehler13641
+sudo apt install autoconf-archive #https://github.com/ugtrain/ugtrain/issues/1
+sudo make
+sudo make install
+sudo apt install asciidoc-base
+
+##notiz in pkmd gibt es benchmarks
+
+#hello world
+cd tm-hello-world
+make
+
+##
+Fehler
+
+#libpmem.h fehlt die Funktion pmem_invalidate()->https://lwn.net/Articles/655437/ beschreibt was es macht
+
+
+https://lwn.net/Articles/654390/
+https://github.com/pmem/ndctl
+https://pkgs.org/download/libndctl-dev
+( ITP: ndctl -- NVDIMM management utility)
+Quelle
+
+http://pmem.io/pmdk/libpmem/
+https://pmem.io/pmdk/
+https://docs.pmem.io/getting-started-guide/what-is-pmdk
+http://pmem.io/pmdk/manpages/linux/master/libpmem/libpmem.7.html
+https://software.intel.com/en-us/articles/introduction-to-programming-with-persistent-memory-from-intel
+----------------
+
+bash history
+------------
+export PROMPT_COMMAND='history -a'
+touch .bash_history
+
+----
+in Emulation gibt es ein hello world, dass auf den VM ausgeführt werden kann
+
+#include <sys/mman.h> fehlt, wenn nach Kompilieren file not found kommt
+
+zu finden in /usr/include/
+
+###
+Fehler für hello-fabric.c
+####
+ausführen des codes auf vm
+include <sys/stat.h> fehlt
+erstellen in vm touch /mnt/fabric_emulation
+erstellen auf host touch /dev/shm/fabric_emulation
+
+
+######
+putty
+#####
+
+puttykeygen key generieren
+in putty den priv key unter ssh->auth hochladen
+auf vm hinterlegen ...
+
+
+###########################################################################
+
+#Install tm-hello-world.c depenencies on node01
+
+git clone https://github.com/FabricAttachedMemory/tm-hello-world.git
+
+cd tm-hello-world/
+make
+
+#libpmem nachinstallieren
+#enthalten in pmdk
+
+wget https://github.com/pmem/pmdk/archive/1.5.tar.gz
+
+## release 1.5 https://github.com/pmem/pmdk/releases/tag/1.5
+## das ist ein pre build package
+wget https://github.com/FabricAttachedMemory/nvml
+
+#in ordner pmdk_1.5/ extrahieren
+tar -xzf 1.5.tar.gz -C pmdk_1.5/
+cd pmdk_1.5/pmdk_1.5
+
+#installieren der benötigten packete
+#autoconf
+sudo apt install autoconf
+
+#pkg-config
+sudo apt install pkg-config
+
+#ndctl v60.1
+git clone https://github.com/pmem/ndctl.git
+./autogen.sh
+#fehler dann
+## sudo apt install libtool 
+./configure CFLAGS='-g -O2' --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib
+
+#Fehler dann sudo apt install asciidoctor 
+apt intsall asciidoctor
+apt install libkmod-dev
+apt install libudev-dev
+apt install uuid
+apt install uuid-dev
+apt install libjson-c-dev
+apt install bash
+apt install bash-completion
+apt install glib-2.0
+
+make
+make check
+sudo make install
+
+##pmdk installieren
+cd pmdk_1.5
+make
+sudo make install
+
+#libdaxctl-devel v60.1
+
+#libndctl-devel v60.1
+
+Quelle:
+###########################
+hello-world
+##Packete installieren
+apt install autoconf
+apt install pkg-config
+apt install libtool 
+apt intsall asciidoctor
+apt install libkmod-dev
+apt install libudev-dev
+apt install uuid
+apt install uuid-dev
+apt install libjson-c-dev
+apt install bash
+apt install bash-completion
+apt install glib-2.0
+apt install asciidoc-base
+apt install autoconf-archive #https://github.com/ugtrain/ugtrain/issues/1
+sudo apt install libpcre3-dev
+sudo apt --fix-broken install
+
+#libglib-dev
+wget http://ftp.de.debian.org/debian/pool/main/g/glib2.0/libglib2.0-dev_2.50.3-2_amd64.deb
+sudo dpkg -i libglib2.0-dev_2.50.3-2_amd64.deb
+
+##repos herunterladen
+git clone https://github.com/FabricAttachedMemory/tm-hello-world.git
+git clone https://github.com/pmem/ndctl.git
+git clone https://github.com/FabricAttachedMemory/libfam-atomic.git
+
+## software herunterladen
+wget https://github.com/pmem/pmdk/archive/1.5.tar.gz
+wget https://github.com/ofiwg/libfabric/releases/download/v1.6.2/libfabric-1.6.2.tar.gz
+
+##libfabric installieren
+tar -xzf libfabric-1.6.2.tar.gz
+./configure
+make
+make install
+
+##ndctl installieren
+./autogen.sh
+./configure CFLAGS='-g -O2' --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib
+make
+make check
+sudo make install
+
+##pmem installieren
+tar -xzf 1.5.tar.gz
+make 
+make install
+
+
+##libatomic installieren
+sudo sh autogen.sh
+sudo make
+sudo make install
+
+###
+libfam-atomic/tests
+darin single-node zum laufen bekommen siehe README
+sudo apt-get -y install libfam-atomic2-dev
+gcc -o fam_atomic_single_node_test fam_atomic_single_node_test.c -lfam_atomic
+##Fehler undefinded reference pthread_create mit -pthred compilieren
+ gcc -o fam_atomic_single_node_test fam_atomic_single_node_test.c -lfam_atomic -pthread
+
+
+
