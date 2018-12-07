@@ -15,6 +15,8 @@ size=10000000
 dd if=/dev/urandom bs=$size count=1 | base64 > /home/l4mdc/sometext.txt
 cat /home/l4mdc/sometext.txt | tr 'A-Za-z0-9+/=' 'a-z'
 truncate -s $size /home/l4mdc/sometext.txt
+REAL_SIZE="$(du -h /home/l4mdc/sometext.txt)"
+echo $REAL_SIZE
 
 # make ist definiert in Makefile kompiliert bench-touper code
 make bench-toupper-formatted
