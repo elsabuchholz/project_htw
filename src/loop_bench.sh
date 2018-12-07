@@ -9,9 +9,9 @@
 #1M
 #size=1000000
 #10M
-#size=10000000
+size=10000000
 #20M
-size=20000000
+#size=20000000
 dd if=/dev/urandom bs=$size count=1 | base64 > /home/l4mdc/sometext.txt
 cat /home/l4mdc/sometext.txt | tr 'A-Za-z0-9+/=' 'a-z'
 truncate -s $size /home/l4mdc/sometext.txt
