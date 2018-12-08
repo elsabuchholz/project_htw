@@ -30,8 +30,9 @@ cp /home/l4mdc/sometext.txt /lfs/sometext.txt &&
 #sleep um sicher zu stellen, dass sometext nicht entfernt wird vor Änderungen
 sleep 10s
 #entfernen der random datei und kopieren der vorher erstellten Datei
+echo "rm sometext from lfs"
 rm -rf /lfs/sometext.txt
 
 echo The counter is $COUNTER
- COUNTER=$((COUNTER+1))
+COUNTER=$((COUNTER+1))
 done
