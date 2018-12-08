@@ -7,9 +7,9 @@
 #100K
 #size=100000
 #1M
-#size=1000000
+size=1000000
 #10M
-size=10000000
+#size=10000000
 #20M
 #size=20000000
 dd if=/dev/urandom bs=$size count=1 | base64 > /home/l4mdc/sometext.txt
