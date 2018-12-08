@@ -8,13 +8,14 @@
 #size=100000
 #1M
 size=1000000
+size_tr=1M
 #10M
 #size=10000000
 #20M
 #size=20000000
 dd if=/dev/urandom bs=$size count=1 | base64 > /home/l4mdc/sometext.notform &&
 cat /home/l4mdc/sometext.notform | tr 'A-Za-z0-9+/=' 'a-z' > /home/l4mdc/sometext.txt &&
-truncate -s $size /home/l4mdc/sometext.txt
+truncate -s $size_tr /home/l4mdc/sometext.txt
 REAL_SIZE="$(du -h /home/l4mdc/sometext.txt)"
 echo $REAL_SIZE
 
