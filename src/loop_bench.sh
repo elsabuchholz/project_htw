@@ -24,7 +24,8 @@ make bench-toupper-formatted
 #counter um das skript x mal auszuführen in while do loop
 COUNTER=1
 while  [ $COUNTER -le 100 ]; do
-cp /home/l4mdc/sometext.txt /lfs/sometext.txt
+  echo "cp sometext to lfs"
+cp /home/l4mdc/sometext.txt /lfs/sometext.txt &&
 ./out/bench_toupper_formatted  >> rslt/$size.csv
 #sleep um sicher zu stellen, dass sometext nicht entfernt wird vor Änderungen
 sleep 10s
