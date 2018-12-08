@@ -1,4 +1,8 @@
 #!/bin/bash
+#########################################################################
+#This file is the benchmark file for measureing diffrent filesize in lfs#
+#results are going to rslt folder and are formatted                     #
+#########################################################################
 #create random file with characters
 #< /dev/urandom tr -dc "X" | head -c1000 > /lfs/sometext.txt
 #size 10K - 20M erst ab 4K kann gemessen werden, da character mehr als 4K groß ist
