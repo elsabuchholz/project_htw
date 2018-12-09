@@ -7,8 +7,8 @@
 #< /dev/urandom tr -dc "X" | head -c1000 > /lfs/sometext.txt
 #size 10K - 20M erst ab 4K kann gemessen werden, da character mehr als 4K groß ist
 #10K
-#size=10000
-#size_tr=10K
+size=10000
+size_tr=10K
 #100K
 #size=100000
 #size_tr=100K
