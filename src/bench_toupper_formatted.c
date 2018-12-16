@@ -24,7 +24,7 @@ int main(int argc, char const *argv) {
   /*printf("file size is %ld\n",sb.st_size );*/
   char *file_in_memory = mmap(NULL,sb.st_size, PROT_READ  | PROT_WRITE, MAP_SHARED, fd, 0);
   /*printf("printing file as an arry of characters.\n\n");*/
-
+  
   for (int i=0; i < sb.st_size; i++)
   {
     if ((i % 1) == 0){

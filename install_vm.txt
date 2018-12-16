@@ -429,5 +429,29 @@ gcc -o fam_atomic_single_node_test fam_atomic_single_node_test.c -lfam_atomic
 ##Fehler undefinded reference pthread_create mit -pthred compilieren
  gcc -o fam_atomic_single_node_test fam_atomic_single_node_test.c -lfam_atomic -pthread
 
+###################################################################################################################################################
+# herunterladen aller packete für node
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/l/l4fame-node/l4fame-node_0.2_all.deb
+
+dpkg-deb --info xx.deb
+
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/n/nvml/libpmem-dev_0.4.1-1_amd64.deb  
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/n/nvml/libpmem_0.4.1-1_amd64.deb  
 
 
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/libf/libfam-atomic/libfam-atomic2-dbg_2.2-1_amd64.deb  
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/libf/libfam-atomic/libfam-atomic2-dev_2.2-1_amd64.deb  
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/libf/libfam-atomic/libfam-atomic2-tests_2.2-1_amd64.deb  
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/libf/libfam-atomic/libfam-atomic2_2.2-1_amd64.deb  
+
+das tm-hello-world ist auch im repo
+wenn das installiert ist, kann mit tm-hello-world das programm benutzt werden
+
+alles was aus wget kommt sieht nicht was aus git kommt (dpkg vs ? )
+
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/t/tm-libfuse/tm-libfuse-dbgsym_1.1-1_amd64.deb  
+https://downloads.linux.hpe.com/SDR/repo/l4fame/Debian/pool/main/t/tm-libfuse/tm-libfuse_1.1-1_amd64.deb  
+
+
+
+ 
