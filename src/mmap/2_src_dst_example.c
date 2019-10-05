@@ -30,9 +30,27 @@ int main(int argc, char **argv){
     memcpy(dest, src, filesize);
     /* Read the file char-by-char from the mmap
      */
+     f = (char *) mmap (0, filesize, PROT_READ, MAP_PRIVATE, dfd, 0);
+     for (int i = 0; i < filesize; i++) {
+         char c;
+
+         c = f[i];
+         putchar(c);
+     }
+
+
+    /* int c;
+     FILE *file;
+     file = fopen("test.txt", "r");
+     if (file) {
+       while ((c = getc(file)) != EOF)
+        putchar(c);
+        fclose(file);
+      }
+
     for (i = 1; i < filesize; ++i) {
         printf("%s\n", i, dest[i]);
-    }
+    }*/
     munmap(src, filesize);
     munmap(dest, filesize);
 
