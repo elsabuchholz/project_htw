@@ -58,6 +58,8 @@ int main(int argc, char **argv){
     fd2 =open("/home/l4mdc/out2.txt", O_CREAT | O_APPEND | O_RDWR);
     ret = dup2(fd2, 1);
     printf("hello");
+    close(fd2);
+    
     munmap(src, filesize);
     munmap(dest, filesize);
 
