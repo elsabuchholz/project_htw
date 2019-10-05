@@ -10,7 +10,7 @@ int main(int argc, char **argv){
 
     int sfd, dfd, i;
     char *src, *dest;
-    size_t filesize = 10*1024*1024; //10MB
+    size_t filesize = 10*1024; //10MB
 
     /* HELPER FUNCTION TO WRITE ALL STDOUT TO FILE*/
 
