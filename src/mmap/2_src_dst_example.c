@@ -12,7 +12,7 @@ int main(int argc, char **argv){
     char *src, *dest;
     size_t filesize;
 
-    freopen("/home/l4mdc/sometextmem.txt", "a+", stdout); 
+    freopen("/home/l4mdc/sometextmem.txt", "a+", stdout);
 
 
     /* SOURCE */
@@ -39,7 +39,7 @@ int main(int argc, char **argv){
          char c;
 
          c = f[i];
-         putchar(c) > /home/l4mdc/sometextfrommem.txt;
+         putchar(c);
      }
 
 
