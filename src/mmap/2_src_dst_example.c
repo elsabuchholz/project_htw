@@ -7,18 +7,18 @@
 
 int main(int argc, char **argv){
 
-    int sfd, dfd;
+    int sfd, dfd, i;
     char *src, *dest;
     size_t filesize;
 
     /* SOURCE */
-    sfd = open(/home/l4mdc/sometext.txt, O_RDONLY);
+    sfd = open("/home/l4mdc/sometext.txt", O_RDONLY);
     filesize = lseek(sfd, 0, SEEK_END);
 
     src = mmap(NULL, filesize, PROT_READ, MAP_PRIVATE, sfd, 0);
 
     /* DESTINATION */
-    dfd = open(/lfs/memcpy, O_RDWR | O_CREAT, 0666);
+    dfd = open("/lfs/memcpy", O_RDWR | O_CREAT, 0666);
 
     ftruncate(dfd, filesize);
 
@@ -30,7 +30,7 @@ int main(int argc, char **argv){
     /* Read the file char-by-char from the mmap
      */
     for (i = 1; i < filesize; ++i) {
-        printf("%s\n", i, dst[i]);
+        printf("%s\n", i, dest[i]);
     }
     munmap(src, filesize);
     munmap(dest, filesize);
