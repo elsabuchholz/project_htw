@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <sys/mman.h> /* mmap() is defined in this header */
 #include <fcntl.h>
+#include <stdio.h>
 
 void err_quit(char *msg)
 {
@@ -17,7 +18,8 @@ int main (int argc, char *argv[])
  char *src, *dst;
  struct stat statbuf;
  int mode = 0x0777;
-
+ int i;
+ 
  if (argc != 3)
    err_quit ("usage: a.out <fromfile> <tofile>");
 
@@ -67,7 +69,6 @@ int main (int argc, char *argv[])
 
  /* this copies the input file to the output file */
  memcpy (dst, src, statbuf.st_size);
- printf("%s\n", );
 
  /* Read the file char-by-char from the mmap
   */
