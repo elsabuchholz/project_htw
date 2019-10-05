@@ -14,7 +14,7 @@ int main(int argc, char **argv){
 
     /* HELPER FUNCTION TO WRITE ALL STDOUT TO FILE*/
 
-    freopen("/home/l4mdc/sometextmem.txt", "a+", stdout);
+    /*freopen("/home/l4mdc/sometextmem.txt", "a+", stdout);*/
 
     /* SOURCE */
     sfd = open("/home/l4mdc/sometext.txt", O_RDONLY);
@@ -26,7 +26,7 @@ int main(int argc, char **argv){
     src = mmap(NULL, filesize, PROT_READ, MAP_PRIVATE, sfd, 0);
 
     /* DESTINATION */
-    
+
     dfd = open("/lfs/memcpy", O_RDWR | O_CREAT, 0666);
 
     ftruncate(dfd, filesize);
@@ -37,6 +37,13 @@ int main(int argc, char **argv){
 
     memcpy(dest, src, filesize);
 
+    /* DUP STDOUT TO /home/l4mdc/out.txt */
+
+    int fd;
+    int ret;
+    fd =open("/home/l4mdc/out.txt", O_CREAT | O_APPEND | O_WRONLY);
+    ret = dup2(fd, 1);
+
     /* Read the file char-by-char from the mmap */
      unsigned char *f;
      f = (char *) mmap (0, filesize, PROT_READ, MAP_PRIVATE, dfd, 0);
@@ -45,6 +52,8 @@ int main(int argc, char **argv){
          c = f[i];
          putchar(c);
      }
+
+    close(fd);
 
     munmap(src, filesize);
     munmap(dest, filesize);
