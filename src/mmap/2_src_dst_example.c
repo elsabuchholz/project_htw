@@ -52,9 +52,9 @@ int main(int argc, char **argv){
          c = f[i];
          putchar(c);
      }
-
+dup2(1,fd);
     close(fd);
-    dup2(1,fd);
+
 
     printf("hello");
     int fd2;
