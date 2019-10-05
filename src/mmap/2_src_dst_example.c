@@ -4,6 +4,7 @@
 #include <sys/mman.h> /* mmap() is defined in this header */
 #include <fcntl.h>
 #include <stdio.h>
+include <string.h>
 
 int main(int argc, char **argv){
 
