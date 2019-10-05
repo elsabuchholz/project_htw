@@ -12,6 +12,9 @@ int main(int argc, char **argv){
     char *src, *dest;
     size_t filesize;
 
+    freopen("/home/l4mdc/sometextmem.txt", "a+", stdout); 
+
+
     /* SOURCE */
     sfd = open("/home/l4mdc/sometext.txt", O_RDONLY);
     filesize = lseek(sfd, 0, SEEK_END);
