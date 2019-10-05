@@ -1,3 +1,5 @@
+/*https://stackoverflow.com/questions/26259421/use-mmap-in-c-to-write-into-memory*/
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/mman.h> /* mmap() is defined in this header */
@@ -65,6 +67,13 @@ int main (int argc, char *argv[])
 
  /* this copies the input file to the output file */
  memcpy (dst, src, statbuf.st_size);
- return 0;
+ printf("%s\n", );
 
-} /* main */  
+ /* Read the file char-by-char from the mmap
+  */
+ for (i = 1; i < statbuf.st_size; ++i) {
+     printf("%s\n", i, dst[i]);
+ }
+ return 0;
+/*close und numap?*/
+} /* main */
