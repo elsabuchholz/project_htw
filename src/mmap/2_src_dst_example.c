@@ -10,7 +10,7 @@ int main(int argc, char **argv){
 
     int sfd, dfd, i;
     char *src, *dest;
-    size_t filesize;
+    /*size_t filesize;*/
     size_t filesize = 10*1024*1024;
 
     freopen("/home/l4mdc/sometextmem.txt", "a+", stdout);
