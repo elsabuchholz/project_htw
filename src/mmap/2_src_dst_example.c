@@ -41,7 +41,7 @@ int main(int argc, char **argv){
 
     int fd;
     int ret;
-    fd =open("/home/l4mdc/out.txt", O_CREAT | O_APPEND | O_WRONLY);
+    fd =open("/home/l4mdc/out.txt", O_CREAT | O_APPEND | O_RDWR);
     ret = dup2(fd, 1);
 
     /* Read the file char-by-char from the mmap */
