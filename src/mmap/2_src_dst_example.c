@@ -27,7 +27,11 @@ int main(int argc, char **argv){
     /* COPY */
 
     memcpy(dest, src, filesize);
-
+    /* Read the file char-by-char from the mmap
+     */
+    for (i = 1; i < filesize; ++i) {
+        printf("%s\n", i, dst[i]);
+    }
     munmap(src, filesize);
     munmap(dest, filesize);
 
