@@ -11,13 +11,14 @@ int main(int argc, char **argv){
     int sfd, dfd, i;
     char *src, *dest;
     size_t filesize;
+    size_t filesize = 10*1024*1024;
 
     freopen("/home/l4mdc/sometextmem.txt", "a+", stdout);
 
 
     /* SOURCE */
     sfd = open("/home/l4mdc/sometext.txt", O_RDONLY);
-    filesize = lseek(sfd, 0, SEEK_END);
+    /*filesize = lseek(sfd, 0, SEEK_END);*/
 
     src = mmap(NULL, filesize, PROT_READ, MAP_PRIVATE, sfd, 0);
 
