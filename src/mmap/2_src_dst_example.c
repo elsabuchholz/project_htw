@@ -30,6 +30,7 @@ int main(int argc, char **argv){
     memcpy(dest, src, filesize);
     /* Read the file char-by-char from the mmap
      */
+     unsigned char *f;
      f = (char *) mmap (0, filesize, PROT_READ, MAP_PRIVATE, dfd, 0);
      for (int i = 0; i < filesize; i++) {
          char c;
