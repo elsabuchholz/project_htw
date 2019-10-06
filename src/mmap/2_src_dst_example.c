@@ -90,20 +90,5 @@ int main(int argc, char **argv){
     close(sfd);
     close(dfd);
 
-
-
-
-
-
-
-
-
-
-
-
-
-        puts("back to normal output");
-
-
     return 0;
 }
