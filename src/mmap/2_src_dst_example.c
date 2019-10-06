@@ -39,10 +39,22 @@ int main(int argc, char **argv){
 
     /* DUP STDOUT TO /home/l4mdc/out.txt */
 
-    int fd;
+    /*int fd;
     int ret;
     fd =open("/home/l4mdc/out.txt", O_CREAT | O_APPEND | O_RDWR);
-    ret = dup2(fd, 1);
+    ret = dup2(fd, 1);*/
+
+
+    int out = open("cout.log", O_RDWR|O_CREAT|O_APPEND, 0600);
+        if (-1 == out) { perror("opening cout.log"); return 255; }
+    int err = open("cerr.log", O_RDWR|O_CREAT|O_APPEND, 0600);
+        if (-1 == err) { perror("opening cerr.log"); return 255; }
+
+    int save_out = dup(fileno(stdout));
+    int save_err = dup(fileno(stderr));
+
+    if (-1 == dup2(out, fileno(stdout))) { perror("cannot redirect stdout"); return 255; }
+    if (-1 == dup2(err, fileno(stderr))) { perror("cannot redirect stderr"); return 255; }
 
     /* Read the file char-by-char from the mmap */
      unsigned char *f;
@@ -52,21 +64,46 @@ int main(int argc, char **argv){
          c = f[i];
          putchar(c);
      }
-dup2(1,fd);
-    close(fd);
 
+    /*dup2(1,fd);
+    close(fd);*/
+
+    fflush(stdout); close(out);
+    fflush(stderr); close(err);
+
+    dup2(save_out, fileno(stdout));
+    dup2(save_err, fileno(stderr));
+
+    close(save_out);
+    close(save_err);
+/* BACK TO STDOUT */
 
     printf("hello");
-    int fd2;
+    /*int fd2;
     fd2 =open("/home/l4mdc/out2.txt", O_CREAT | O_APPEND | O_RDWR);
     ret = dup2(fd2, 1);
-    close(fd2);
+    close(fd2);*/
 
     munmap(src, filesize);
     munmap(dest, filesize);
 
     close(sfd);
     close(dfd);
+
+
+
+
+
+
+
+
+
+
+
+
+
+        puts("back to normal output");
+
 
     return 0;
 }
