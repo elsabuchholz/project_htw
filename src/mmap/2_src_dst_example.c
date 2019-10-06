@@ -14,6 +14,7 @@ int main(int argc, char **argv){
     size_t filesize = 10*1024; //10MB
     struct timeval start, end;
     double delta;
+    FILE * fpt;
 
     /* HELPER FUNCTION TO WRITE ALL STDOUT TO FILE*/
 
@@ -43,7 +44,11 @@ int main(int argc, char **argv){
 
     /* GET THE TIME AND PRINT TO STDOUT */
      delta =((end.tv_sec - start.tv_sec) * 1000000u + end.tv_usec - start.tv_usec) / 1.e6;
-     printf("%f\n",delta);
+     /*printf("%f\n",delta);*/
+     fpt = fopen ("time.txt", "w+");
+     fprintf(fpt, "%f\n",delta);
+
+     fclose(fp);
 
     /* DUP STDOUT TO /home/l4mdc/out.txt */
 
