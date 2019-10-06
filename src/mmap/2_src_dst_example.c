@@ -48,7 +48,7 @@ int main(int argc, char **argv){
      fpt = fopen ("time.txt", "w+");
      fprintf(fpt, "%f\n",delta);
 
-     fclose(fp);
+     fclose(fpt);
 
     /* DUP STDOUT TO /home/l4mdc/out.txt */
 
