@@ -5,12 +5,15 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/time.h>
 
 int main(int argc, char **argv){
 
-    int sfd, dfd, i;
+    int sfd, dfd;
     char *src, *dest;
     size_t filesize = 10*1024; //10MB
+    struct timeval start, end;
+    double delta;
 
     /* HELPER FUNCTION TO WRITE ALL STDOUT TO FILE*/
 
@@ -34,8 +37,13 @@ int main(int argc, char **argv){
     dest = mmap(NULL, filesize, PROT_READ | PROT_WRITE, MAP_SHARED, dfd, 0);
 
     /* COPY */
-
+    gettimeofday(&start, 0);
     memcpy(dest, src, filesize);
+    gettimeofday(&end, 0);
+
+    /* GET THE TIME AND PRINT TO STDOUT */
+     delta =((end.tv_sec - start.tv_sec) * 1000000u + end.tv_usec - start.tv_usec) / 1.e6;
+     printf("%f\n",delta);
 
     /* DUP STDOUT TO /home/l4mdc/out.txt */
 
@@ -78,7 +86,7 @@ int main(int argc, char **argv){
     close(save_err);
 /* BACK TO STDOUT */
 
-    printf("hello");
+
     /*int fd2;
     fd2 =open("/home/l4mdc/out2.txt", O_CREAT | O_APPEND | O_RDWR);
     ret = dup2(fd2, 1);
