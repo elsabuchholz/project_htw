@@ -45,7 +45,7 @@ int main(int argc, char **argv){
     /* GET THE TIME AND PRINT TO STDOUT */
      delta =((end.tv_sec - start.tv_sec) * 1000000u + end.tv_usec - start.tv_usec) / 1.e6;
      /*printf("%f\n",delta);*/
-     fpt = fopen ("time.txt", "w+");
+     fpt = fopen ("time.txt", "a");
      fprintf(fpt, "%f\n",delta);
 
      fclose(fpt);
